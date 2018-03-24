@@ -1,0 +1,39 @@
+# zadani: Hledání více vzorků v textu I
+# autor: Martin Holoubek
+# datum: 5. 10. 2015
+
+CF=-Wno-sign-compare -std=c++11 -g -Wall -pedantic -march=sandybridge -fopenmp
+# CF+=-DDEBUG
+# CF+=-DINSTR
+#O=bin_no_ins
+ O=bin_ins
+
+all: new_basic_o0 new_basic_o3 new_chunked new_uint64_t new_uint64_t_chunked new_uint64_t_unrolled new_uint64_t_vectorized
+	
+new_basic_o0: makefile header.cpp footer.cpp new_basic.cpp
+	g++ $(CF) -O0 new_basic.cpp -o $(O)/new_basic_o0
+	
+new_basic_o3: makefile header.cpp footer.cpp new_basic.cpp
+	g++ $(CF) -O3 new_basic.cpp -o $(O)/new_basic_o3
+
+new_chunked: makefile header.cpp footer.cpp new_chunked.cpp
+	g++ $(CF) -O3 new_chunked.cpp -o $(O)/new_chunked
+
+new_uint64_t: makefile header.cpp footer.cpp new_uint64_t.cpp
+	g++ $(CF) -O3 new_uint64_t.cpp -o $(O)/new_uint64_t
+
+new_uint64_t_chunked: makefile header.cpp footer.cpp new_uint64_t_chunked.cpp
+	g++ $(CF) -O3 new_uint64_t_chunked.cpp -o $(O)/new_uint64_t_chunked
+
+new_uint64_t_unrolled: makefile header.cpp footer.cpp new_uint64_t_unrolled.cpp
+	g++ $(CF) -O3 new_uint64_t_unrolled.cpp -o $(O)/new_uint64_t_unrolled
+
+new_uint64_t_vectorized: makefile header.cpp footer.cpp new_uint64_t_vectorized.cpp
+	g++ $(CF) -O3 -mavx -fopt-info-vec  new_uint64_t_vectorized.cpp -o $(O)/new_uint64_t_vectorized
+
+new_chunked_parallel: makefile header.cpp footer.cpp new_chunked_parallel.cpp
+	g++ $(CF) -O3 new_chunked_parallel.cpp -o $(O)/new_chunked_parallel
+	
+clear:
+	rm -f new_basic_o0 new_basic_o3 new_chunked new_uint64_t new_uint64_t_vectorized new_uint64_t_chunked new_uint64_t_unrolled new_chunked_parallel callgrind* cachegrind*
+

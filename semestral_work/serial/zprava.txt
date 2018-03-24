@@ -1,0 +1,26 @@
+1. - Definice problému
+Vyhledávání podřetězce v textu (Substring matching)
+Cílem je nalezení veškerých výskytů hledaného řetězce v zadaném textu. K řešení tohoto problému exituje množství algoritmů. Například vyhledávání naivní metodou, algoritmus KMP nebo pomocí trií.
+
+Naivní algoritmus
+	Datově nezávislý se zaručenou složitostí Θ(m*n). Spočívá v průchodu veškerých možností vzájemných pozic řetězců a jejich následném porovnání.
+	Předčasné ukončení vnitřního cyklu může v ideálním případě urychlit výpočet až na Ω(2*n), horní složitost zůstává Θ(m*n). Pokud by se text nevešel do paměti počítače / cache. Každý návrat ve vzorku zpět na pozici 0 by znamenal nové načítání dat.
+
+Knuth - Morris - Pratt algoritmus
+	Algoritmus používá předzpracování vzorku pro urychlené vyhledávání. Dobu vyhledávání zkracuje pomocí posunu o více než jednu pozici v závislosti na struktuře dat. Algoritmus nejprve vyplní tabulku posunů a v druhé gázi pak spustí samotné vyhledávání.
+	V případě neshody znaku se podívá do tabulky a provede předpočítaný posun v závislosti na struktuře vzorku.
+	Pro výpočet tabulky potřebujeme Θ(m) operací a pro samotné vyhledávání Θ(n). Paměťová náročnosti je Θ(m) = Ω(m) = m.
+
+
+2. - Optimalizace
+	Pouhým zapnutím 03, se rychlost naivního algoritmu zvýšila více než 10x.
+	Další implementovanou úpravou byla změna datového typu z char (1 byte) na uint64_t (8 bytů).
+		Naivní implementace se zrychlila cca 60x, v ideálním případě až 64x.
+		U algoritmu KMP se zrychlení projevilo cca 7x, ideálně 8x. Zrychlení spočívá ve snížení počtu průchodů cykly.
+
+		Algoritmy jsou datově citlivé a proto zrychlení osciluje okolo ideálních hodnot.
+		Nevýhodou je přímý přístup do paměti a náchylnost na chyby implementace. Postup je založen na určité struktuře paměti a nemusí být zaručena jeho přenositelnost.
+
+	Vektorizace instrukcí se mi povedla pouze u naivního algorimus. Výsledky jsem ukládal do pole uint8_t, které jsem přetypoval na uint64_t. 
+		Toto vylepšenní umožnilo cca 4 násobné zrychlení. Implementace byla podobná jako u předchozího zrychlení.
+		Nevýhodou je obtížnější implementace a ošetřování okrajových podmínek, jako je dělitelnost velikostí řětězců.
