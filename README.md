@@ -1,5 +1,6 @@
 # BI-EIA Course
-## CTU / ČVUT FIT
+## Efektivní implementace algoritmů
+### CTU / ČVUT FIT
 
 Warning - this repository contains lots of ugly code. Please refer here: https://www.youtube.com/watch?v=VcgRaf38uCQ
 
